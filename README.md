@@ -27,4 +27,5 @@ This will start the server, and you can then access the application by navigatin
 
 
 Shutdown the server:
+
 To avoide losing your data gracefully shutdown the server by pressing CTRL+C in the Terminal.
