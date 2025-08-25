@@ -4,12 +4,14 @@
 Installation and Setup
 
 Clone the Repository:
-Bash
+
 git clone <https://github.com/mohammedtakween/device-manager.git>
+
 cd device-manager
 
 
 Install Dependencies:
 Navigate to the project's root directory in your terminal and run the following command to install the necessary Node.js packages:
-Bash
+
+
 npm install
