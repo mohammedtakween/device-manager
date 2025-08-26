@@ -13,10 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const token = localStorage.getItem('token');
     if (token) {
-        // Optionally validate token with a backend call
         mainContainer.style.display = 'block';
         authModal.style.display = 'none';
-        fetchDevices(); // Fetch devices if already logged in
+        fetchDevices(); 
     } else {
         authModal.style.display = 'block';
         mainContainer.style.display = 'none';
@@ -55,15 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
-                if (!isRegisterMode) { // If successfully logged in
+                if (!isRegisterMode) { 
                 localStorage.setItem('token', data.token);
                 authModal.style.display = 'none';
                 mainContainer.style.display = 'block';
-                fetchDevices(); // Fetch devices after successful login
+                fetchDevices(); 
             } else {
-                alert(data.message); // Keep alert for registration
+                alert(data.message); 
             }
-                // If registered, switch to login mode
                 isRegisterMode = false;
                 authModalTitle.textContent = 'Login';
                 authSubmit.textContent = 'Login';
@@ -125,11 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (editingId) {
                 await updateDevice(editingId, deviceData);
-                await fetchDevices(); // Re-fetch all devices to ensure consistency after update
+                await fetchDevices(); 
             } else {
                 const newDevice = await addDevice(deviceData);
                 console.log('New device added:', newDevice);
-                // No need to fetchDevices() here, as addDevice already pushes the new device to the local array
             }
 
             renderDevices();

@@ -6,7 +6,7 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
-const JWT_SECRET = 'your_jwt_secret_key'; // Replace with a strong, unique secret key
+const JWT_SECRET = 'your_jwt_secret_key'; 
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
@@ -43,7 +43,6 @@ const db = new sqlite3.Database('./devices.db', (err) => {
     }
 });
 
-// User Registration
 app.post('/api/register', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -69,7 +68,6 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// User Login
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -98,24 +96,21 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// Middleware to protect routes
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    if (token == null) return res.sendStatus(401); // No token
+    if (token == null) return res.sendStatus(401); 
 
-    jwt.verify(token, JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403); // Invalid token
+jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403); 
         req.user = user;
         next();
     });
 };
 
-// Apply authentication middleware to device routes
 app.use('/api/devices', authenticateToken);
 
-// Get all devices
 app.get('/api/devices', (req, res) => {
     const userId = req.user.id;
     db.all('SELECT * FROM devices WHERE userId = ?', [userId], (err, rows) => {
@@ -126,7 +121,6 @@ app.get('/api/devices', (req, res) => {
     });
 });
 
-// Add a new device
 app.post('/api/devices', (req, res) => {
     const userId = req.user.id;
     const { customerName, deviceName, amount, date, status } = req.body;
@@ -146,7 +140,6 @@ app.post('/api/devices', (req, res) => {
     });
 });
 
-// Update a device
 app.put('/api/devices/:id', (req, res) => {
     const userId = req.user.id;
     const deviceId = req.params.id;
@@ -165,7 +158,6 @@ app.put('/api/devices/:id', (req, res) => {
     );
 });
 
-// Delete a device
 app.delete('/api/devices/:id', (req, res) => {
     const userId = req.user.id;
     const deviceId = req.params.id;
@@ -184,7 +176,6 @@ app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// Graceful shutdown
 process.on('SIGINT', () => {
     console.log('SIGINT signal received: closing SQLite connection.');
     db.close((err) => {
